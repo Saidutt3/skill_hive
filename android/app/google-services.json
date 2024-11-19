@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "591101585603",
+    "project_id": "skillhive-e9fa6",
+    "storage_bucket": "skillhive-e9fa6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591101585603:android:80aa879055a2419ddb9a76",
+        "android_client_info": {
+          "package_name": "com.example.skill_hive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB31JdDIyZZhP4xdsedLWfc9mlx7wj9sGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

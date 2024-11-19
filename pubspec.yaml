@@ -1,0 +1,57 @@
+name: skill_hive
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  cloud_firestore: ^5.5.0
+  curved_navigation_bar: ^1.0.6
+  file_picker: ^8.1.4
+  firebase_auth: ^5.3.3
+  firebase_core: ^3.8.0
+  flashy_tab_bar2: ^0.0.10
+  flutter:
+    sdk: flutter
+  flutter_blurhash: ^0.8.2
+  image_picker: ^1.1.2
+  motion_tab_bar: ^2.0.4
+  video_player: ^2.9.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/logo.png
+    - assets/screen.png
+    - assets/IntroVideo.mp4
+    - assets/image1.jpg
+    - assets/image2.jpg
+    - assets/image3.jpg
+    - assets/image4.jpg
+    - assets/image5.jpg
+    - assets/image6.jpg
+    - assets/whatsapp.jpg
+    - assets/share.jpg
+    - assets/insta.jpg
+    - assets/google.jpg
+    - assets/card_details/image1.jpg
+    - assets/card_details/image2.jpg
+    - assets/card_details/image3.jpg
+    - assets/card_details/image4.jpg
+    - assets/GetInspired.jpg
+    - assets/getInspired/image1.jpg
+
+
+
+
+
+
+
+
