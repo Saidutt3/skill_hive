@@ -5,6 +5,9 @@ import 'package:motion_tab_bar/MotionBadgeWidget.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:skill_hive/CartScreen.dart';
 import 'package:skill_hive/NotificationScreen.dart';
+import 'package:skill_hive/model/logo_card_model.dart';
+import 'package:skill_hive/model/whishlist_mode.dart';
+import 'package:skill_hive/view/LogoScreen/card_details.dart';
 import 'package:skill_hive/view/get_inspired.dart';
 
 import 'package:skill_hive/view/homeScreen/Widget/service_category.dart';
@@ -21,38 +24,43 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
 
-  final List<Service> services = [
-    Service(
-      imageUrl: 'assets/image1.jpg',
-      avatarUrl: 'https://via.placeholder.com/50',
-      title: "Web App UI/UX design for your business",
-      price: "From \$150",
-    ),
-    Service(
-      imageUrl: 'assets/image2.jpg',
-      avatarUrl: 'https://via.placeholder.com/50',
-      title: "Mobile App UI/UX design for your business",
-      price: "From \$120",
-    ),
-    Service(
-      imageUrl: 'assets/image3.jpg',
-      avatarUrl: 'https://via.placeholder.com/50',
-      title: "E-commerce Platform UI/UX Design",
-      price: "From \$200",
-    ),
-    Service(
-      imageUrl: 'assets/image4.jpg',
-      avatarUrl: 'https://via.placeholder.com/50',
-      title: "Landing Page UI Design",
-      price: "From \$100",
-    ),
-    Service(
-      imageUrl: 'assets/image5.jpg',
-      avatarUrl: 'https://via.placeholder.com/50',
-      title: "Dashboard UI Design for Analytics",
-      price: "From \$180",
-    ),
-  ];
+  // final List<Service> services = [
+  //   Service(
+  //     isFavorite: "false",
+  //     imageUrl: 'assets/image1.jpg',
+  //     avatarUrl: 'https://via.placeholder.com/50',
+  //     title: "Web App UI/UX design for your business",
+  //     price: "From \$150",
+  //   ),
+  //   Service(
+  //     isFavorite: "false",
+  //     imageUrl: 'assets/image2.jpg',
+  //     avatarUrl: 'https://via.placeholder.com/50',
+  //     title: "Mobile App UI/UX design for your business",
+  //     price: "From \$120",
+  //   ),
+  //   Service(
+  //     isFavorite: "false",
+  //     imageUrl: 'assets/image3.jpg',
+  //     avatarUrl: 'https://via.placeholder.com/50',
+  //     title: "E-commerce Platform UI/UX Design",
+  //     price: "From \$200",
+  //   ),
+  //   Service(
+  //     isFavorite: "false",
+  //     imageUrl: 'assets/image4.jpg',
+  //     avatarUrl: 'https://via.placeholder.com/50',
+  //     title: "Landing Page UI Design",
+  //     price: "From \$100",
+  //   ),
+  //   Service(
+  //     isFavorite: "false",
+  //     imageUrl: 'assets/image5.jpg',
+  //     avatarUrl: 'https://via.placeholder.com/50',
+  //     title: "Dashboard UI Design for Analytics",
+  //     price: "From \$180",
+  //   ),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -81,6 +89,8 @@ class _HomepageState extends State<Homepage> {
       });
     }
   }
+
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -193,20 +203,17 @@ class _HomepageState extends State<Homepage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Popular Service",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 10),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: List.generate(services.length, (index) {
-                              final service = services[index];
-                              return GestureDetector(
+                        Row(
+                          children: [
+                            const Text(
+                              "Popular Service",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Spacer(),
+                            GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -214,6 +221,17 @@ class _HomepageState extends State<Homepage> {
                                             const ServiceCategory()),
                                   );
                                 },
+                                child: Text("See All")),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: List.generate(logoData.length, (index) {
+                              final service = logoData[index];
+                              return GestureDetector(
+                                onTap: () {},
                                 child: Container(
                                   margin: const EdgeInsets.only(right: 10.0),
                                   width: 250,
@@ -231,24 +249,72 @@ class _HomepageState extends State<Homepage> {
                                     children: [
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset(
-                                          service.imageUrl,
-                                          fit: BoxFit.cover,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MobileAppDevelopmentPage(
+                                                        logoDataModel:
+                                                            logoData[index],
+                                                      )),
+                                            );
+                                          },
+                                          child: Image.asset(
+                                            service.imageUrl,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                       ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundImage:
-                                              NetworkImage(service.avatarUrl),
+                                        leading: const CircleAvatar(
+                                          backgroundImage: NetworkImage(""),
                                         ),
                                         title: Text(service.title,
                                             style: const TextStyle(
                                                 color: Colors.white)),
-                                        subtitle: Text(service.price,
+                                        subtitle: Text(
+                                            logoData[index].price.toString(),
                                             style: const TextStyle(
                                                 color: Colors.white70)),
-                                        trailing: const Icon(Icons.favorite,
-                                            color: Colors.white54),
+                                        trailing: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              // Toggle the isFavorite value
+                                              if (logoData[index].isFavorite ==
+                                                  "true") {
+                                                logoData[index].isFavorite =
+                                                    "false";
+                                                wishlistItems.removeWhere(
+                                                    (item) =>
+                                                        item.title ==
+                                                        logoData[index].title);
+                                              } else {
+                                                logoData[index].isFavorite =
+                                                    "true";
+                                                wishlistItems.add(
+                                                  WhishlistMode(
+                                                    imageUrl: logoData[index]
+                                                        .imageUrl,
+                                                    title:
+                                                        logoData[index].title,
+                                                    description: logoData[index]
+                                                        .description,
+                                                    isLiked: logoData[index]
+                                                        .isFavorite,
+                                                  ),
+                                                );
+                                              }
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: logoData[index].isFavorite ==
+                                                    "true"
+                                                ? Colors.red
+                                                : Colors.white54,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -378,8 +444,9 @@ class _HomepageState extends State<Homepage> {
         initialSelectedTab: "Home",
         useSafeArea: true,
         labels: const [
-          "Dashboard",
           "Home",
+          "Dashboard",
+
           "Wishlist",
           "Manage Orders", // New tab added here
           "Profile"
@@ -425,55 +492,54 @@ class _HomepageState extends State<Homepage> {
         tabBarColor: Colors.black,
         onTabItemSelected: (int value) {
           setState(() {
+            switch (value) {
+              case 0:
+                // Dashboard or Home
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const Homepage(),
+                  ),
+                );
+                break;
+              case 1:
+                // Wishlist
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Wishlist(), // Replace with your Wishlist screen
+                  ),
+                );
+                break;
+              case 2:
+                // Cart
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CartScreen(), // Replace with your Cart screen
+                  ),
+                );
+                break;
+              case 3:
+              // Manage Orders
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) =>
+              //         // ManageOrdersScreen(), // Replace with your Manage Orders screen
+              //   ),
+              // );
+              // break;
+              case 4:
+                // Profile
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const ProfileScreen(), // Replace with your Profile screen
+                  ),
+                );
+                break;
+            }
             _selectedIndex = value;
           });
-
-          switch (value) {
-            case 0:
-              // Dashboard or Home
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const Homepage(),
-                ),
-              );
-              break;
-            case 1:
-              // Wishlist
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      Wishlist(), // Replace with your Wishlist screen
-                ),
-              );
-              break;
-            case 2:
-              // Cart
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      CartScreen(), // Replace with your Cart screen
-                ),
-              );
-              break;
-            case 3:
-            // Manage Orders
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) =>
-            //         // ManageOrdersScreen(), // Replace with your Manage Orders screen
-            //   ),
-            // );
-            // break;
-            case 4:
-              // Profile
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      const ProfileScreen(), // Replace with your Profile screen
-                ),
-              );
-              break;
-          }
         },
       ),
     );
@@ -485,10 +551,13 @@ class Service {
   final String avatarUrl;
   final String title;
   final String price;
+  String isFavorite;
 
-  Service(
-      {required this.imageUrl,
-      required this.avatarUrl,
-      required this.title,
-      required this.price});
+  Service({
+    required this.imageUrl,
+    required this.avatarUrl,
+    required this.title,
+    required this.price,
+    required this.isFavorite,
+  });
 }

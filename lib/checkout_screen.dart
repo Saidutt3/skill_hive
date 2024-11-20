@@ -36,7 +36,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             Row(
               children: [
                 Image.asset(
-                  logoData[Logocontroller.logocontrollervar]['imageUrl'],
+                  logoData[Logocontroller.logocontrollervar].imageUrl,
                   width: 200,
                   height: 140,
                   fit: BoxFit.cover,
@@ -44,7 +44,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    logoData[Logocontroller.logocontrollervar]['title'],
+                    logoData[Logocontroller.logocontrollervar].title,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

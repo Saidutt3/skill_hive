@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:skill_hive/model/logo_card_model.dart';
 
 class BecomeSeller extends StatefulWidget {
   @override
@@ -93,37 +94,36 @@ class _BecomeSellerState extends State<BecomeSeller> {
     }
   }
 
-  List<Map<String, dynamic>> logoData = [];
-
 // Function to fetch player data from Firestore
-  Future<void> _fetchPlayerData() async {
-    log("in fetch Data");
+  Future<void> fetchPlayerData() async {
     try {
       QuerySnapshot response =
           await FirebaseFirestore.instance.collection("sellers").get();
 
       logoData.clear();
       for (int i = 0; i < response.docs.length; i++) {
-        log("${response.docs[i]['title']}");
-
-        logoData.add({
-          "title": response.docs[i]["title"],
-          "imageUrl": response.docs[i]["cardImageUrl"],
-          "heading": response.docs[i]["heading"],
-          "price1": response.docs[i]["silverPrice"],
-          "price2": response.docs[i]["goldPrice"],
-          "price3": response.docs[i]["platinumPrice"],
-          "description": response.docs[i]["description"],
-          "name": response.docs[i]["name"],
-        });
-        log(logoData.toString());
+        logoData.add(LogoDataModel(
+            name: response.docs[i]["name"],
+            isFavorite: "true",
+            skills: response.docs[i]["skills"],
+            imageUrl: response.docs[i]["cardImageUrl"],
+            title: response.docs[i]["title"],
+            heading: response.docs[i]["heading"],
+            description: response.docs[i]["description"],
+            price: "3500",
+            price1: response.docs[i]["silverPrice"],
+            price2: response.docs[i]["goldPrice"],
+            price3: response.docs[i]["platinumPrice"],
+            plan: "Plan",
+            planDescription: "planDescription",
+            rating: "rating",
+            reviews: "reviews"));
       }
-
+      log(logoData.toString());
       setState(() {}); // Update the UI after fetching data
     } catch (e) {
-      log("Error fetching data: $e");
+      print("Error fetching data: $e");
     }
-    log(logoData.toString());
   }
 
   @override
@@ -431,7 +431,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                     if (_formKey.currentState?.validate() ?? false) {
                       _saveDataToFirestore();
                       log("is fetched");
-                      await _fetchPlayerData();
+                      await fetchPlayerData();
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Submitting form')),

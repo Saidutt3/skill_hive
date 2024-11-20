@@ -3,18 +3,13 @@ import 'package:skill_hive/checkout_screen.dart';
 import 'package:skill_hive/controller/logocontroller.dart';
 import 'package:skill_hive/model/logo_card_model.dart';
 
-class MobileAppDevelopmentPage extends StatefulWidget {
-  const MobileAppDevelopmentPage({super.key});
+class MobileAppDevelopmentPage extends StatelessWidget {
+  final LogoDataModel logoDataModel;
 
-  @override
-  State<MobileAppDevelopmentPage> createState() =>
-      _MobileAppDevelopmentPageState();
-}
+  MobileAppDevelopmentPage({super.key, required this.logoDataModel});
 
-class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
-  int selectedPackageType = 1; // Default to Silver Package
-
-  // Define all services for the packages
+  int selectedPackageType = 1;
+  // Default to Silver Package
   final List<String> allServices = [
     'Functional Android app',
     'Functional IOS App',
@@ -26,9 +21,9 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
     'Include source code',
   ];
 
-  // Get the services for the selected package based on the selected plan
+  // // Get the services for the selected package based on the selected plan
   List<String> getSelectedServices(int selectedPackageIndex) {
-    return logoData[selectedPackageIndex]['services'] ?? [];
+    return [] ?? [];
   }
 
   @override
@@ -36,7 +31,7 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          logoData[Logocontroller.logocontrollervar]['title'],
+          logoData[Logocontroller.logocontrollervar].title,
           style: const TextStyle(fontSize: 22),
         ),
         flexibleSpace: Container(
@@ -59,7 +54,7 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
               height: 300,
               decoration: const BoxDecoration(color: Colors.black),
               child: Image.asset(
-                logoData[Logocontroller.logocontrollervar]['imageUrl'],
+                logoDataModel.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
@@ -79,9 +74,16 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        logoData[Logocontroller.logocontrollervar]['name'],
                         Text(
-                          'Mobile App Developer',
+                          logoData[Logocontroller.logocontrollervar].name,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          logoData[Logocontroller.logocontrollervar].skills,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -112,8 +114,7 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            logoData[Logocontroller.logocontrollervar]
-                                ['heading'],
+                            logoData[Logocontroller.logocontrollervar].heading,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -122,7 +123,7 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
                           const SizedBox(height: 8),
                           Text(
                             logoData[Logocontroller.logocontrollervar]
-                                ['description'],
+                                .description,
                             style: TextStyle(color: Colors.grey[400]),
                           ),
                         ],
@@ -134,18 +135,12 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      buildPriceTag(
-                          context,
-                          logoData[Logocontroller.logocontrollervar]['price1'],
-                          1),
-                      buildPriceTag(
-                          context,
-                          logoData[Logocontroller.logocontrollervar]['price2'],
-                          2),
-                      buildPriceTag(
-                          context,
-                          logoData[Logocontroller.logocontrollervar]['price3'],
-                          3),
+                      buildPriceTag(context,
+                          logoData[Logocontroller.logocontrollervar].price1, 1),
+                      buildPriceTag(context,
+                          logoData[Logocontroller.logocontrollervar].price2, 2),
+                      buildPriceTag(context,
+                          logoData[Logocontroller.logocontrollervar].price3, 3),
                     ],
                   ),
                   const Divider(color: Colors.grey, height: 32),
@@ -185,7 +180,7 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
                   ).toList(),
                   const SizedBox(height: 20),
 // Gradient Button
-                  buildGradientButton(),
+                  buildGradientButton(context),
                 ],
               ),
             ),
@@ -237,11 +232,11 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
+        return const Padding(
+          padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               Text(
                 'About the Creator',
                 style: TextStyle(
@@ -266,9 +261,9 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
 
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectedPackageType = packageType; // Update the selected package
-        });
+        // setState(() {
+        //   selectedPackageType = packageType; // Update the selected package
+        // });
       },
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -306,7 +301,7 @@ class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
     );
   }
 
-  Widget buildGradientButton() {
+  Widget buildGradientButton(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
@@ -426,11 +421,11 @@ void _showPortfolioBottomSheet(BuildContext context, Map<String, String> item) {
 }
 
 // Hide the back button using this method when navigating to this page
-void navigateToMobileAppDevelopmentPage(BuildContext context) {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const MobileAppDevelopmentPage(),
-    ),
-  );
-}
+// void navigateToMobileAppDevelopmentPage(BuildContext context) {
+//   Navigator.pushReplacement(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) => const MobileAppDevelopmentPage(),
+//     ),
+//   );
+// }

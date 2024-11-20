@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:skill_hive/model/whishlist_mode.dart';
 
 class Wishlist extends StatefulWidget {
   @override
   _WishlistState createState() => _WishlistState();
 }
 
+@override
 class _WishlistState extends State<Wishlist> {
   // List of wishlist items
-  final List<Map<String, dynamic>> wishlistItems = [
-    {
-      'title': 'Mobile App UI Design',
-      'icon': Icons.phone_android,
-    },
-    {
-      'title': 'E-commerce Platform UI Design',
-      'icon': Icons.shopping_cart,
-    },
-  ];
-
-  @override
+  // final List<Map<String, dynamic>> wishlistItems = [
+  //   {
+  //     'title': 'Mobile App UI Design',
+  //     'icon': Icons.phone_android,
+  //   },
+  //   {
+  //     'title': 'E-commerce Platform UI Design',
+  //     'icon': Icons.shopping_cart,
+  //   },
+  // ];
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -51,13 +51,12 @@ class _WishlistState extends State<Wishlist> {
               child: ListView.builder(
                 itemCount: wishlistItems.length,
                 itemBuilder: (context, index) {
-                  final item = wishlistItems[index];
                   return Column(
                     children: [
                       _buildCard(
                         context,
-                        item['title'],
-                        item['icon'],
+                        wishlistItems[index].title,
+                        wishlistItems[index].imageUrl,
                         index,
                       ),
                       const SizedBox(height: 16),
@@ -72,7 +71,7 @@ class _WishlistState extends State<Wishlist> {
   Widget _buildCard(
     BuildContext context,
     String title,
-    IconData icon,
+    String icon,
     int index,
   ) {
     return Card(
@@ -87,6 +86,8 @@ class _WishlistState extends State<Wishlist> {
           children: [
             // Icon section
             Container(
+              height: 50,
+              width: 50,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
@@ -96,10 +97,9 @@ class _WishlistState extends State<Wishlist> {
                 ),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: Image.asset(
                 icon,
                 color: Colors.white,
-                size: 40,
               ),
             ),
             const SizedBox(width: 16),

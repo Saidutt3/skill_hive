@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:skill_hive/model/logo_card_model.dart';
 import 'package:skill_hive/view/Login_Page.dart';
 import 'package:skill_hive/view/SignIn.dart';
 import 'package:skill_hive/view/homeScreen/HomePage.dart';
@@ -58,7 +62,7 @@ class _SkillHivePageState extends State<SkillHivePage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "SkillHive",
                 style: TextStyle(
                   fontSize: 30,
@@ -66,17 +70,17 @@ class _SkillHivePageState extends State<SkillHivePage> {
                   color: Colors.white,
                 ),
               ),
-              Text(
+              const Text(
                 "Freelance Services. On Demand.",
                 style: TextStyle(color: Colors.white),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   buildServiceCard("Find a Service", Icons.search,
                       "I'm looking for talented people to work with"),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   buildServiceCard("Selling Services", Icons.edit,
                       "I'd like to offer my services"),
                 ],
@@ -91,11 +95,47 @@ class _SkillHivePageState extends State<SkillHivePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                gradientTextButton(
-                    "Skip",
-                    () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Homepage()),
-                        )),
+                gradientTextButton("Skip", () async {
+                  // Function to fetch player data from Firestore
+                  Future<void> fetchPlayerData() async {
+                    try {
+                      QuerySnapshot response = await FirebaseFirestore.instance
+                          .collection("sellers")
+                          .get();
+
+                      logoData.clear();
+
+                      for (int i = 0; i < response.docs.length; i++) {
+                        logoData.add(LogoDataModel(
+                            name: response.docs[i]["name"],
+                            isFavorite: "true",
+                            skills: response.docs[i]["skills"],
+                            imageUrl: response.docs[i]["cardImageUrl"],
+                            title: response.docs[i]["title"],
+                            heading: response.docs[i]["heading"],
+                            description: response.docs[i]["description"],
+                            price: "3500",
+                            price1: response.docs[i]["silverPrice"],
+                            price2: response.docs[i]["goldPrice"],
+                            price3: response.docs[i]["platinumPrice"],
+                            plan: "Plan",
+                            planDescription: "planDescription",
+                            rating: "rating",
+                            reviews: "reviews"));
+                      }
+                      log(logoData.toString());
+                      setState(() {}); // Update the UI after fetching data
+                    } catch (e) {
+                      print("Error fetching data: $e");
+                    }
+                  }
+
+                  await fetchPlayerData();
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Homepage()),
+                  );
+                }),
                 gradientTextButton(
                     "Log In",
                     () => Navigator.of(context).push(
@@ -112,14 +152,14 @@ class _SkillHivePageState extends State<SkillHivePage> {
 
   Widget buildServiceCard(String title, IconData icon, String subtitle) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.6),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.8),
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
             blurRadius: 10,
           ),
         ],
@@ -129,7 +169,7 @@ class _SkillHivePageState extends State<SkillHivePage> {
         children: [
           ShaderMask(
             shaderCallback: (Rect bounds) {
-              return LinearGradient(
+              return const LinearGradient(
                 colors: [Colors.blue, Colors.purple],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -137,14 +177,14 @@ class _SkillHivePageState extends State<SkillHivePage> {
             },
             child: Icon(icon, color: Colors.white, size: 40),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(title,
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          SizedBox(height: 4),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 4),
           Text(
             subtitle,
-            style: TextStyle(color: Colors.white70, fontSize: 12),
+            style: const TextStyle(color: Colors.white70, fontSize: 12),
             textAlign: TextAlign.center,
           ),
         ],
@@ -155,7 +195,7 @@ class _SkillHivePageState extends State<SkillHivePage> {
   Widget gradientTextButton(String text, VoidCallback onPressed) {
     return ShaderMask(
       shaderCallback: (Rect bounds) {
-        return LinearGradient(
+        return const LinearGradient(
           colors: [Colors.blue, Colors.purple],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -165,7 +205,7 @@ class _SkillHivePageState extends State<SkillHivePage> {
         onPressed: onPressed,
         child: Text(
           text,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );

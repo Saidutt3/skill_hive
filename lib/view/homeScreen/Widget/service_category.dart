@@ -1,6 +1,6 @@
 // Sample logo data
-import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_tab_bar/MotionBadgeWidget.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
@@ -10,7 +10,7 @@ import 'package:skill_hive/view/LogoScreen/card_details.dart';
 import 'package:skill_hive/view/profileScreen.dart';
 
 class ServiceCategory extends StatefulWidget {
-  const ServiceCategory({Key? key}) : super(key: key);
+  const ServiceCategory({super.key});
 
   @override
   State<ServiceCategory> createState() => _ServiceCategoryState();
@@ -22,7 +22,6 @@ class _ServiceCategoryState extends State<ServiceCategory> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Logo Design', style: TextStyle(fontSize: 22)),
-        actions: [],
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -100,23 +99,23 @@ class _ServiceCategoryState extends State<ServiceCategory> {
                 ),
                 itemCount: logoData.length,
                 itemBuilder: (context, index) {
-                  final logo = logoData[index];
                   return GestureDetector(
                     onTap: () {
                       Logocontroller.logocontrollervar = index;
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>
-                              const MobileAppDevelopmentPage(),
+                          builder: (context) => MobileAppDevelopmentPage(
+                            logoDataModel: logoData[index],
+                          ),
                         ),
                       );
                     },
                     child: LogoCard(
-                      imageUrl: logo['imageUrl'],
-                      title: logo['title'],
-                      rating: logo['rating'],
-                      reviews: logo['reviews'],
-                      price: logo['price'],
+                      imageUrl: logoData[index].imageUrl,
+                      title: logoData[index].title,
+                      // rating: logoData[index]['rating'],
+                      // reviews: logoData[index]['reviews'],
+                      // price: logoData[index]['price'],
                     ),
                   );
                 },
@@ -183,7 +182,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) =>
-                    ProfileScreen(), // Replace with your custom page widget
+                    const ProfileScreen(), // Replace with your custom page widget
               ),
             );
           }
@@ -196,7 +195,7 @@ class _ServiceCategoryState extends State<ServiceCategory> {
 class FilterOptionCard extends StatelessWidget {
   final String title;
 
-  const FilterOptionCard({Key? key, required this.title}) : super(key: key);
+  const FilterOptionCard({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -227,18 +226,18 @@ class FilterOptionCard extends StatelessWidget {
 class LogoCard extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final double rating;
-  final double reviews;
-  final double price;
+  // final String rating;
+  // final String reviews;
+  // final String price;
 
   const LogoCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
-    required this.rating,
-    required this.reviews,
-    required this.price,
-  }) : super(key: key);
+    // required this.rating,
+    // required this.reviews,
+    // required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -284,22 +283,32 @@ class LogoCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                Row(
+                const Row(
                   children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 16),
+                    Icon(Icons.star, color: Colors.amber, size: 16),
                     Text(
-                      '$rating ($reviews)',
-                      style: const TextStyle(color: Colors.white70),
+                      "4.5",
+                      style: TextStyle(color: Colors.white70),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'From \$$price',
-                  style: const TextStyle(
-                      color: Colors.cyanAccent,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14),
+                Row(
+                  children: [
+                    const Text(
+                      'From 30 ',
+                      style: const TextStyle(
+                          color: Colors.cyanAccent,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                        onTap: () {}, child: const Icon(Icons.delete)),
+                    const SizedBox(width: 5),
+                    GestureDetector(
+                        onTap: () {}, child: const Icon(Icons.edit)),
+                  ],
                 ),
               ],
             ),
