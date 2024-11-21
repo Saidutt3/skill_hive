@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:skill_hive/controller/logocontroller.dart';
+import 'package:skill_hive/model/checkoutScreenModal.dart';
 import 'package:skill_hive/model/logo_card_model.dart';
+import 'package:skill_hive/model/whishlist_mode.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({Key? key}) : super(key: key);
+  CheckoutScreen({super.key, required this.logoDataModel});
+
+  final LogoDataModel logoDataModel;
 
   @override
-  _CheckoutScreenState createState() => _CheckoutScreenState();
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  String? _paymentMethod = 'card'; // Variable to hold selected payment method
+  String? _paymentMethod = 'card';
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             Row(
               children: [
                 Image.asset(
-                  logoData[Logocontroller.logocontrollervar].imageUrl,
+                  widget.logoDataModel.imageUrl,
                   width: 200,
                   height: 140,
                   fit: BoxFit.cover,
@@ -44,7 +48,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    logoData[Logocontroller.logocontrollervar].title,
+                    widget.logoDataModel.title,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -79,9 +83,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     value: 'card',
                     groupValue: _paymentMethod,
                     onChanged: (String? value) {
-                      setState(() {
-                        _paymentMethod = value;
-                      });
+                      // setState(() {
+                      //   _paymentMethod = value;
+                      // });
                     },
                     activeColor: Colors
                         .transparent, // Keep the radio active color transparent
@@ -110,9 +114,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     value: 'paypal',
                     groupValue: _paymentMethod,
                     onChanged: (String? value) {
-                      setState(() {
-                        _paymentMethod = value;
-                      });
+                      // setState(() {
+                      //   _paymentMethod = value;
+                      // });
                     },
                     activeColor: Colors
                         .transparent, // Keep the radio active color transparent
@@ -158,16 +162,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Text('Source file', style: TextStyle(color: Colors.white)),
                 ],
               ),
-              trailing: const Text('US\$40',
-                  style: TextStyle(color: Colors.white)), // White text
+              trailing: Text("\u20B9${widget.logoDataModel.price1}",
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 15)), // White text
             ),
-            ListTile(
-              leading: const Icon(Icons.check, color: Colors.green),
-              title: const Text('Additional logo',
-                  style: TextStyle(color: Colors.white)), // White text
-              trailing: const Text('US\$5',
-                  style: TextStyle(color: Colors.white)), // White text
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.check, color: Colors.green),
+            //   title: const Text('Additional logo',
+            //       style: TextStyle(color: Colors.white)), // White text
+            //   trailing: const Text('US\$5',
+            //       style: TextStyle(color: Colors.white)), // White text
+            // ),
             const Divider(color: Colors.white), // White divider
 
             // Order summary
@@ -180,10 +185,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text('Subtotal',
                     style: TextStyle(color: Colors.white)), // White text
-                Text('US\$45',
+                Text("\u20B9${widget.logoDataModel.price1}",
                     style: TextStyle(color: Colors.white)), // White text
               ],
             ),
@@ -193,7 +198,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               children: const [
                 Text('GST',
                     style: TextStyle(color: Colors.white)), // White text
-                Text('US\$9.08',
+                Text('₹ 0.00',
                     style: TextStyle(color: Colors.white)), // White text
               ],
             ),
@@ -203,34 +208,34 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               children: const [
                 Text('Service fee',
                     style: TextStyle(color: Colors.white)), // White text
-                Text('US\$5.48',
+                Text('₹ 0.00',
                     style: TextStyle(color: Colors.white)), // White text
               ],
             ),
             const Divider(color: Colors.white), // White divider
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text('Total',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white)), // White text
-                Text('US\$59.56',
+                Text("\u20B9${widget.logoDataModel.price1}",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white)), // White text
               ],
             ),
             const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text('Delivery date',
-                    style: TextStyle(color: Colors.white)), // White text
-                Text('Sunday 10 November, 2024',
-                    style: TextStyle(color: Colors.white)), // White text
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: const [
+            //     Text('Delivery date',
+            //         style: TextStyle(color: Colors.white)), // White text
+            //     Text('Sunday 10 November, 2024',
+            //         style: TextStyle(color: Colors.white)), // White text
+            //   ],
+            // ),
             const SizedBox(height: 20),
 
             // Promo code section
@@ -261,23 +266,48 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
             // Add payment method button
             // Add payment method button with gradient background
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                gradient: const LinearGradient(
-                  colors: [Colors.purpleAccent, Colors.blueAccent],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+            GestureDetector(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Proceeding to checkout...')),
+                );
+                setState(() {
+                  // Toggle the isFavorite value
+                  if (widget.logoDataModel.isCheckout == "true") {
+                    widget.logoDataModel.isCheckout = "false";
+                    CheckOutItems.removeWhere(
+                        (item) => item.title == widget.logoDataModel.title);
+                  } else {
+                    widget.logoDataModel.isCheckout = "true";
+                    CheckOutItems.add(
+                      CheckOutMode(
+                        imageUrl: widget.logoDataModel.imageUrl,
+                        title: widget.logoDataModel.title,
+                        description: widget.logoDataModel.description,
+                        isCheckout: widget.logoDataModel.isCheckout,
+                      ),
+                    );
+                  }
+                });
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: const LinearGradient(
+                    colors: [Colors.purpleAccent, Colors.blueAccent],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                 ),
-              ),
-              child: const Center(
-                child: Text(
-                  'Checkout Order',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                child: const Center(
+                  child: Text(
+                    'Checkout Order',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -287,10 +317,4 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: CheckoutScreen(),
-  ));
 }

@@ -108,7 +108,8 @@ class _SkillHivePageState extends State<SkillHivePage> {
                       for (int i = 0; i < response.docs.length; i++) {
                         logoData.add(LogoDataModel(
                             name: response.docs[i]["name"],
-                            isFavorite: "true",
+                            isFavorite: "false",
+                            isCheckout: "false",
                             skills: response.docs[i]["skills"],
                             imageUrl: response.docs[i]["cardImageUrl"],
                             title: response.docs[i]["title"],

@@ -1,14 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:skill_hive/checkout_screen.dart';
 import 'package:skill_hive/controller/logocontroller.dart';
 import 'package:skill_hive/model/logo_card_model.dart';
 
-class MobileAppDevelopmentPage extends StatelessWidget {
+class MobileAppDevelopmentPage extends StatefulWidget {
   final LogoDataModel logoDataModel;
 
   MobileAppDevelopmentPage({super.key, required this.logoDataModel});
 
+  @override
+  State<MobileAppDevelopmentPage> createState() =>
+      _MobileAppDevelopmentPageState();
+}
+
+class _MobileAppDevelopmentPageState extends State<MobileAppDevelopmentPage> {
   int selectedPackageType = 1;
+
   // Default to Silver Package
   final List<String> allServices = [
     'Functional Android app',
@@ -21,9 +29,26 @@ class MobileAppDevelopmentPage extends StatelessWidget {
     'Include source code',
   ];
 
-  // // Get the services for the selected package based on the selected plan
-  List<String> getSelectedServices(int selectedPackageIndex) {
-    return [] ?? [];
+  // Get the services for the selected package
+  List<String> getSelectedServices() {
+    if (selectedPackageType == 1) {
+      return [
+        'Functional ${widget.logoDataModel.title}',
+        'Logo Design ',
+        'Responsive design',
+      ];
+    } else if (selectedPackageType == 2) {
+      return [
+        'Functional ${widget.logoDataModel.title} ',
+        'Logo Design ',
+        'Responsive design',
+        '${widget.logoDataModel.title} submission',
+        'App icon',
+        'Splash screen',
+      ];
+    } else {
+      return allServices;
+    }
   }
 
   @override
@@ -31,7 +56,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          logoData[Logocontroller.logocontrollervar].title,
+          widget.logoDataModel.title,
           style: const TextStyle(fontSize: 22),
         ),
         flexibleSpace: Container(
@@ -54,7 +79,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
               height: 300,
               decoration: const BoxDecoration(color: Colors.black),
               child: Image.asset(
-                logoDataModel.imageUrl,
+                widget.logoDataModel.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
@@ -75,7 +100,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          logoData[Logocontroller.logocontrollervar].name,
+                          widget.logoDataModel.name,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -83,7 +108,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          logoData[Logocontroller.logocontrollervar].skills,
+                          widget.logoDataModel.skills,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -114,7 +139,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            logoData[Logocontroller.logocontrollervar].heading,
+                            widget.logoDataModel.heading,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -122,8 +147,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            logoData[Logocontroller.logocontrollervar]
-                                .description,
+                            widget.logoDataModel.description,
                             style: TextStyle(color: Colors.grey[400]),
                           ),
                         ],
@@ -135,12 +159,12 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      buildPriceTag(context,
-                          logoData[Logocontroller.logocontrollervar].price1, 1),
-                      buildPriceTag(context,
-                          logoData[Logocontroller.logocontrollervar].price2, 2),
-                      buildPriceTag(context,
-                          logoData[Logocontroller.logocontrollervar].price3, 3),
+                      buildPriceTag(
+                          context, "\u20B9${widget.logoDataModel.price1}", 1),
+                      buildPriceTag(
+                          context, "\u20B9${widget.logoDataModel.price2}", 2),
+                      buildPriceTag(
+                          context, "\u20B9${widget.logoDataModel.price3}", 3),
                     ],
                   ),
                   const Divider(color: Colors.grey, height: 32),
@@ -148,7 +172,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                   // Services Section
                   Text(
                     selectedPackageType == 1
-                        ? 'Silver Package Services'
+                        ? 'Silver Package Services '
                         : selectedPackageType == 2
                             ? 'Gold Package Services'
                             : 'Platinum Package Services',
@@ -158,7 +182,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  ...getSelectedServices(selectedPackageType).map(
+                  ...getSelectedServices().map(
                     (service) {
                       return ListTile(
                         leading: ShaderMask(
@@ -177,10 +201,12 @@ class MobileAppDevelopmentPage extends StatelessWidget {
                         title: Text(service),
                       );
                     },
-                  ).toList(),
+                  ),
                   const SizedBox(height: 20),
 // Gradient Button
-                  buildGradientButton(context),
+                  buildGradientButton(
+                    context,
+                  ),
                 ],
               ),
             ),
@@ -232,7 +258,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return const Padding(
+        return Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -246,7 +272,7 @@ class MobileAppDevelopmentPage extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'John Doe is a highly experienced mobile app developer with over 5 years of experience in building stunning and functional applications for Android and iOS platforms. He specializes in creating tailored solutions to meet client requirements.',
+                '${widget.logoDataModel.name} is a highly experienced ${widget.logoDataModel.title} with over 5 years of experience in ${widget.logoDataModel.skills} for ${widget.logoDataModel.title}. He specializes in creating tailored solutions to meet client requirements.',
                 style: TextStyle(fontSize: 16),
               ),
             ],
@@ -261,9 +287,9 @@ class MobileAppDevelopmentPage extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // setState(() {
-        //   selectedPackageType = packageType; // Update the selected package
-        // });
+        setState(() {
+          selectedPackageType = packageType; // Update the selected package
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -306,7 +332,9 @@ class MobileAppDevelopmentPage extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const CheckoutScreen(),
+            builder: (context) => CheckoutScreen(
+              logoDataModel: widget.logoDataModel,
+            ),
           ),
         );
       },

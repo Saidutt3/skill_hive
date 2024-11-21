@@ -18,10 +18,10 @@ class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
   @override
-  State createState() => _HomepageState();
+  State createState() => HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
 
   // final List<Service> services = [
@@ -70,7 +70,7 @@ class _HomepageState extends State<Homepage> {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String? username;
+  static String? username;
 
   @override
   void initState() {
@@ -214,14 +214,15 @@ class _HomepageState extends State<Homepage> {
                             ),
                             Spacer(),
                             GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ServiceCategory()),
-                                  );
-                                },
-                                child: Text("See All")),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ServiceCategory()),
+                                );
+                              },
+                              child: Text("See All"),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -270,11 +271,11 @@ class _HomepageState extends State<Homepage> {
                                         leading: const CircleAvatar(
                                           backgroundImage: NetworkImage(""),
                                         ),
-                                        title: Text(service.title,
+                                        title: Text(logoData[index].title,
                                             style: const TextStyle(
                                                 color: Colors.white)),
                                         subtitle: Text(
-                                            logoData[index].price.toString(),
+                                            "From \u20B9${logoData[index].price1}",
                                             style: const TextStyle(
                                                 color: Colors.white70)),
                                         trailing: GestureDetector(

@@ -1,6 +1,8 @@
 class LogoDataModel {
   String name;
   String isFavorite;
+  String isCheckout;
+
   String skills;
   String imageUrl;
   String title;
@@ -18,6 +20,7 @@ class LogoDataModel {
   LogoDataModel({
     required this.name,
     required this.isFavorite,
+    required this.isCheckout,
     required this.skills,
     required this.imageUrl,
     required this.title,
@@ -38,6 +41,7 @@ List<LogoDataModel> tempData = [
   LogoDataModel(
       name: "Sai",
       isFavorite: "false",
+      isCheckout: "false",
       skills: "Fultter, Dart",
       imageUrl: "assets/image1.jpg",
       title: 'Web App UI/UX',
@@ -57,6 +61,7 @@ I'm Adnan Abbas a Full Stack Developer having 3 years of experience working with
   LogoDataModel(
       name: "Saidutt",
       isFavorite: "false",
+      isCheckout: "false",
       skills: "Fultter, Dart",
       imageUrl: "assets/image3.jpg",
       title: 'Mobile App UI/UX',
